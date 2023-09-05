@@ -4,6 +4,8 @@ from urllib.parse import unquote
 
 from sqlalchemy.exc import IntegrityError
 
+from model import Session, Produto 
+from logger import logger
 from flask_cors import CORS
 
 
