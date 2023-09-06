@@ -104,3 +104,28 @@ def get_produto(query: ProdutoBuscaSchema):
         logger.debug(f"Produto encontrado: '{produto_nome}'")
         # retorna a representação do produto
         return apresenta_produto(produto), 200
+
+
+@app.delete('/produto', tags=[produto_tag],
+            responses={"200": ProdutoDelSchema, "404": ErrorSchema})
+def deleta_produto(query: ProdutoBuscaSchema):
+    """ Deleta um produto a partir do nome do produto informado.
+
+    Retorna uma mensagem de confirmação de remoção.
+    """
+    produto_nome = unquote(unquote(query.nome))
+    print(produto_nome)
+    logger.debug(f"Deletando dados sobre o produto #{produto_nome}")
+    # criando conexão com a base
+    session = Session()
+    # fazendo a remoção
+    count = session.query(Produto).filter(Produto.nome == produto_nome).delete()
+    session.commit()
+
+    if count:
+        logger.debug(f"Deletando produto #{produto_nome}")
+        return {"message": "Produto removido", "nome": produto_nome}, 200
+    else:
+        error_msg = "Produto não encontrado na base."
+        logger.warning(f"Erro ao deletar produto #'{produto_nome}', {error_msg}")
+        return {"message": error_msg}, 404

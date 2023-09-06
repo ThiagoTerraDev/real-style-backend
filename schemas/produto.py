@@ -59,3 +59,11 @@ class ProdutoBuscaSchema(BaseModel):
         Que será feita apenas com base no nome do produto.
     """
     nome: str = "Mens Casual Premium Slim Fit T-Shirts"
+
+
+class ProdutoDelSchema(BaseModel):
+    """ Define como deve ser a estrutura do dado retornado após uma requisição de remoção.
+    """
+    message: str
+    nome: str
+    
