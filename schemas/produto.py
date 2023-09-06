@@ -52,3 +52,10 @@ def apresenta_produtos(produtos: List[Produto]):
         })
     
     return {"produtos": result}
+
+
+class ProdutoBuscaSchema(BaseModel):
+    """ Define como deve ser a estrutura que representa a busca.
+        Que será feita apenas com base no nome do produto.
+    """
+    nome: str = "Mens Casual Premium Slim Fit T-Shirts"

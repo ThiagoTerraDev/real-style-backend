@@ -80,3 +80,27 @@ def get_produtos():
         # retorna a representação de produto
         print(produtos)
         return apresenta_produtos(produtos), 200
+
+
+@app.get('/produto', tags=[produto_tag],
+         responses={"200": ProdutoViewSchema, "404": ErrorSchema})
+def get_produto(query: ProdutoBuscaSchema):
+    """ Faz a busca por um produto a partir do nome do produto.
+
+    Retorna uma representação do produto.
+    """
+    produto_nome = query.nome
+    logger.debug(f"Coletando dados sobre o produto #{produto_nome}")
+    # criando conexão com a base
+    session = Session()
+    # fazendo a busca
+    produto = session.query(Produto).filter(Produto.nome == produto_nome).first()
+
+    if not produto:
+        error_msg = "Produto não encontrado na base."
+        logger.warning(f"Erro ao buscar produto '{produto_nome}', {error_msg}")
+        return {"message": error_msg}, 404
+    else:
+        logger.debug(f"Produto encontrado: '{produto_nome}'")
+        # retorna a representação do produto
+        return apresenta_produto(produto), 200
