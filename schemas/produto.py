@@ -30,3 +30,25 @@ def apresenta_produto(produto: Produto):
         "quantidade": produto.quantidade,
         "valor_unitario": produto.valor_unitario
     }
+
+
+class ListagemProdutosSchema(BaseModel):
+    """ Define como uma listagem de produtos será retornada.
+    """
+    produtos: List[ProdutoSchema]
+
+
+def apresenta_produtos(produtos: List[Produto]):
+    """ Retorna uma representação do produto seguindo o schema definido em
+        ProdutoViewSchema.
+    """
+    result = []
+    for produto in produtos:
+        result.append({
+            "nome": produto.nome,
+            "quantidade": produto.quantidade,
+            "valor_unitario": produto.valor_unitario,
+            "id": produto.id,
+        })
+    
+    return {"produtos": result}

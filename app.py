@@ -14,7 +14,6 @@ info = Info(title="Real Style Backend", version="1.0.0")
 app = OpenAPI(__name__, info=info)
 CORS(app)
 
-
 home_tag = Tag(name="Documentação", description="Seleção de documentação: Swagger, ReDoc ou RapiDoc.")
 produto_tag = Tag(name="Produto", description="Consulta, adição, remoção ou edição de produtos cadastrados na base.")
 
@@ -59,3 +58,25 @@ def adiciona_produto(form: ProdutoSchema):
         error_msg = "Não foi possível cadastrar novo item."
         logger.warning(f"Erro ao adicionar produto '{produto.nome}', {error_msg}")
         return {"message": error_msg}, 400
+
+
+@app.get('/produtos', tags=[produto_tag],
+         responses={"200": ListagemProdutosSchema, "404": ErrorSchema})
+def get_produtos():
+    """ Faz a busca por todos os produtos cadastrados.
+
+    Retorna uma representação da listagem de produtos.
+    """
+    logger.debug(f"Coletando produtos ")
+    # criando conexão com a base
+    session = Session()
+    # fazendo a busca
+    produtos = session.query(Produto).all()
+
+    if not produtos:
+        return {"produtos": []}, 200
+    else:
+        logger.debug(f"%d produtos encontrados" % len(produtos))
+        # retorna a representação de produto
+        print(produtos)
+        return apresenta_produtos(produtos), 200
