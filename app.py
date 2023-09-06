@@ -129,3 +129,37 @@ def deleta_produto(query: ProdutoBuscaSchema):
         error_msg = "Produto não encontrado na base."
         logger.warning(f"Erro ao deletar produto #'{produto_nome}', {error_msg}")
         return {"message": error_msg}, 404
+
+
+@app.put('/editar_produto', tags=[produto_tag],
+         responses={"200": ProdutoViewSchema, "409": ErrorSchema, "400": ErrorSchema})
+def editar_produto(form: UpdateProdutoSchema):
+    """ Edita a quantidade de um produto existente na base de dados.
+
+    Retorna uma representação do produto.
+    """
+    nome_produto = form.nome
+    session = Session()
+
+    try:
+        query = session.query(Produto).filter(Produto.nome == nome_produto)
+        print(query)
+        db_produto = query.first()
+
+        if not db_produto:
+            error_msg = "Produto não encontrado na base."
+            logger.warning(f"Erro ao buscar produto '{nome_produto}', {error_msg}")
+            return {"message": error_msg}, 404
+        else:
+            if form.quantidade:
+                db_produto.quantidade = form.quantidade
+            
+            session.add(db_produto)
+            session.commit()
+            logger.debug(f"Editado produto de nome: '{db_produto.nome}'")
+            return apresenta_produto(db_produto), 200
+    except Exception as e:
+        # caso ocorra um erro fora do previsto
+        error_msg = "Não foi possível salvar item."
+        logger.warning(f"Erro ao editar produto '{db_produto.nome}', {error_msg}")
+        return {"message": error_msg}, 400

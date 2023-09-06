@@ -66,4 +66,10 @@ class ProdutoDelSchema(BaseModel):
     """
     message: str
     nome: str
-    
+
+
+class UpdateProdutoSchema(BaseModel):
+    """ Define como um novo produto pode ser editado.
+    """
+    nome: str = "Mens Casual Premium Slim Fit T-Shirts"
+    quantidade: int = 12
