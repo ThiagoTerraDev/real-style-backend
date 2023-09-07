@@ -69,7 +69,7 @@ Execute **como administrador** o seguinte comando para construir a imagem Docker
 $ docker build -t real-style-backend .
 ```
 
-Uma vez criada a imagem, para executar o container basta executar, **como administrador**, o seguinte o comando:
+Uma vez criada a imagem, para executar o container basta executar, **como administrador**, o seguinte comando:
 
 ```
 $ docker run -p 5000:5000 real-style-backend
