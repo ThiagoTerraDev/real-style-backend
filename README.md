@@ -66,13 +66,13 @@ Navegue até o diretório que contém o Dockerfile e o requirements.txt no termi
 Execute **como administrador** o seguinte comando para construir a imagem Docker:
 
 ```
-$ docker build -t real-style-backend .
+$ docker build -t nome_da_sua_imagem .
 ```
 
 Uma vez criada a imagem, para executar o container basta executar, **como administrador**, o seguinte comando:
 
 ```
-$ docker run -p 5000:5000 real-style-backend
+$ docker run -p 5000:5000 nome_da_sua_imagem
 ```
 
 Uma vez executando, para acessar a API, basta abrir o [http://localhost:5000/#/](http://localhost:5000/#/) no navegador.
